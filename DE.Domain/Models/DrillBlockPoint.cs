@@ -38,6 +38,6 @@ public class DrillBlockPoint
     /// <summary>
     /// Блок обуривания, к которому принадлежит точка.
     /// </summary>
-    public virtual DrillBlock DrillBlock { get; set; } = null!;
+    public virtual DrillBlock DrillBlock { get; set; } = default!;
 }
 

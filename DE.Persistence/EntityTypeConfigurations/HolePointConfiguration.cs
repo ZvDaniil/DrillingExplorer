@@ -20,7 +20,6 @@ public class HolePointConfiguration : IEntityTypeConfiguration<HolePoint>
             .IsRequired();
 
         builder.HasOne(hp => hp.Hole)
-            .WithMany(h => h.HolePoints)
-            .HasForeignKey(hp => hp.HoleId);
+            .WithOne(h => h.HolePoint);
     }
 }

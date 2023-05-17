@@ -18,7 +18,7 @@ public class DrillBlock
     /// <summary>
     /// Дата обновления блока обуривания.
     /// </summary>
-    public DateTime UpdateDate { get; set; }
+    public DateTime? UpdateDate { get; set; }
 
     /// <summary>
     /// Коллекция скважин, принадлежащих блоку обуривания.
@@ -28,5 +28,5 @@ public class DrillBlock
     /// <summary>
     /// Коллекция точек блока обуривания, являются географическим контуром блока обуривания.
     /// </summary>
-    public virtual ICollection<DrillBlockPoint> DrillBlockPoints { get; set; } = null!;
+    public virtual ICollection<DrillBlockPoint>? DrillBlockPoints { get; set; }
 }

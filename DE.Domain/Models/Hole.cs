@@ -28,10 +28,17 @@ public class Hole
     /// <summary>
     /// Блок обуривания, к которому принадлежит скважина.
     /// </summary>
-    public virtual DrillBlock DrillBlock { get; set; } = null!;
+    public virtual DrillBlock DrillBlock { get; set; } = default!;
 
     /// <summary>
-    /// Коллекция точек скважины.
+    /// Идентификатор точки скважины.
     /// </summary>
-    public virtual ICollection<HolePoint> HolePoints { get; set; } = null!;
+    public Guid HolePointId { get; set; }
+
+    /// <summary>
+    /// Точка скважины.
+    /// </summary>
+    public virtual HolePoint? HolePoint { get; set; }
 }
+
+

@@ -23,9 +23,8 @@ public class HoleConfiguration : IEntityTypeConfiguration<Hole>
             .WithMany(b => b.Holes)
             .HasForeignKey(h => h.DrillBlockId);
 
-        builder.HasMany(h => h.HolePoints)
-            .WithOne(hp => hp.Hole)
-            .HasForeignKey(hp => hp.HoleId);
+        builder.HasOne(h => h.HolePoint)
+            .WithOne(hp => hp.Hole);
     }
 }
 

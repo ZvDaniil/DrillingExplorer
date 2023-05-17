@@ -33,6 +33,6 @@ public class HolePoint
     /// <summary>
     /// Скважина, к которой принадлежит точка.
     /// </summary>
-    public virtual Hole Hole { get; set; } = null!;
+    public virtual Hole Hole { get; set; } = default!;
 }
 
