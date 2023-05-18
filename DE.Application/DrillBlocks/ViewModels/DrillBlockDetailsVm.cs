@@ -37,7 +37,7 @@ public class DrillBlockDetailsVm : IMapWith<DrillBlock>
                     Id = p.Id,
                     Sequence = p.Sequence,
                     X = p.X,
-                    Y = p.Y
+                    Y = p.Y,
                     Z = p.Z
                 })));
 }
