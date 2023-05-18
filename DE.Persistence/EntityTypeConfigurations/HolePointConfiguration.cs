@@ -4,7 +4,7 @@ using DE.Domain.Models;
 
 namespace DE.Persistence.EntityTypeConfigurations;
 
-public class HolePointConfiguration : IEntityTypeConfiguration<HolePoint>
+internal class HolePointConfiguration : IEntityTypeConfiguration<HolePoint>
 {
     public void Configure(EntityTypeBuilder<HolePoint> builder)
     {
@@ -20,6 +20,7 @@ public class HolePointConfiguration : IEntityTypeConfiguration<HolePoint>
             .IsRequired();
 
         builder.HasOne(hp => hp.Hole)
-            .WithOne(h => h.HolePoint);
+            .WithOne(h => h.HolePoint)
+            .HasForeignKey<Hole>(h => h.HolePointId);
     }
 }

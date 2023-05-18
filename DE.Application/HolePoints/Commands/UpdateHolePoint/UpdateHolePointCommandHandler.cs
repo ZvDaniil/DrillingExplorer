@@ -1,7 +1,8 @@
-﻿using MediatR;
-using DE.Domain.Models;
+﻿using DE.Application.Common.Exceptions;
 using DE.Application.Interfaces;
-using DE.Application.Common.Exceptions;
+using DE.Domain.Models;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace DE.Application.HolePoints.Commands.UpdateHolePoint;
 
@@ -14,15 +15,21 @@ internal sealed class UpdateHolePointCommandHandler : IRequestHandler<UpdateHole
 
     public async Task Handle(UpdateHolePointCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.HolePoints.FindAsync(new object[] { request.HolePointId }, cancellationToken);
-        if (entity is null)
+        var hole = await _dbContext.Holes.FirstOrDefaultAsync(h => h.Id == request.HoleId, cancellationToken);
+
+        if (hole is null)
         {
-            throw new NotFoundException(nameof(HolePoint), request.HolePointId);
+            throw new NotFoundException(nameof(Hole), request.HoleId);
         }
 
-        entity.X = request.X;
-        entity.Y = request.Y;
-        entity.Z = request.Z;
+        if (hole.HolePoint is null)
+        {
+            throw new NotFoundException(nameof(HolePoint));
+        }
+
+        hole.HolePoint.X = request.X;
+        hole.HolePoint.Y = request.Y;
+        hole.HolePoint.Z = request.Z;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

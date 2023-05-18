@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using DE.Application.HolePoints.ViewModels;
 
-namespace DE.Application.HolePoints.Queries.GetHolePoint;
+namespace DE.Application.HolePoints.Queries.GetHolePoints;
 
-public record GetHolePointQuery(Guid HoleId) : IRequest<HolePointDto>;
+public record GetHolePointQuery(Guid HoleId) : IRequest<HolePointDto?>;

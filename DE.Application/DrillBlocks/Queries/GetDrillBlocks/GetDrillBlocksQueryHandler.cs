@@ -1,24 +1,28 @@
 ﻿using MediatR;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using DE.Application.Interfaces;
 using DE.Application.DrillBlocks.ViewModels;
+using AutoMapper.QueryableExtensions;
 
 namespace DE.Application.DrillBlocks.Queries.GetDrillBlocks;
 
 internal sealed class GetDrillBlocksQueryHandler : IRequestHandler<GetDrillBlocksQuery, DrillBlockListVm>
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public GetDrillBlocksQueryHandler(IApplicationDbContext dbContext) =>
-        _dbContext = dbContext;
+    public GetDrillBlocksQueryHandler(IApplicationDbContext dbContext, IMapper mapper) =>
+        (_dbContext, _mapper) = (dbContext, mapper);
 
     public async Task<DrillBlockListVm> Handle(GetDrillBlocksQuery request, CancellationToken cancellationToken)
     {
-        var drillBlockQuery = await _dbContext.DrillBlocks
+        var drillBlocks = await _dbContext.DrillBlocks
             .AsNoTracking()
-            .Select(DrillBlockExpressions.ToLookupDto)
+            .IgnoreAutoIncludes()
+            .ProjectTo<DrillBlockLookupDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        return new DrillBlockListVm { DrillBlocks = drillBlockQuery };
+        return new DrillBlockListVm { DrillBlocks = drillBlocks };
     }
 }

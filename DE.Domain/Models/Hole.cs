@@ -33,7 +33,7 @@ public class Hole
     /// <summary>
     /// Идентификатор точки скважины.
     /// </summary>
-    public Guid HolePointId { get; set; }
+    public Guid? HolePointId { get; set; }
 
     /// <summary>
     /// Точка скважины.

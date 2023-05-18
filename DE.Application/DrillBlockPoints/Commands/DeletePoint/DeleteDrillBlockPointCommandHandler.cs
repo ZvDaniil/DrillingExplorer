@@ -15,19 +15,21 @@ internal sealed class DeleteDrillBlockPointCommandHandler : IRequestHandler<Dele
 
     public async Task Handle(DeleteDrillBlockPointCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.DrillBlockPoints.FindAsync(new object?[] { request.DrillBlockPointId }, cancellationToken);
-        if (entity is null)
+        var point = await _dbContext.DrillBlockPoints.FindAsync(new object?[] { request.PointId }, cancellationToken);
+
+        if (point is null || point.DrillBlockId != request.DrillBlockId)
         {
-            throw new NotFoundException(nameof(DrillBlockPoint), request.DrillBlockPointId);
+            throw new NotFoundException(nameof(DrillBlockPoint));
         }
 
-        _dbContext.DrillBlockPoints.Remove(entity);
-
-        //Not tested
-        var remainingPoints = await _dbContext.DrillBlockPoints
-            .Where(p => p.DrillBlockId == entity.DrillBlockId && p.Sequence > entity.Sequence)
-            .ExecuteUpdateAsync(s => s.SetProperty(p => p.Sequence, p => p.Sequence - 1), cancellationToken);
+        _dbContext.DrillBlockPoints.Remove(point);
+        await UpdateBlockPointSequence(point.DrillBlockId, point.Sequence, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    private async Task UpdateBlockPointSequence(Guid drillBlockId, int startSequence, CancellationToken cancellationToken) =>
+        await _dbContext.DrillBlockPoints
+            .Where(p => p.DrillBlockId == drillBlockId && p.Sequence > startSequence)
+            .ExecuteUpdateAsync(s => s.SetProperty(p => p.Sequence, p => p.Sequence - 1), cancellationToken);
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
@@ -14,15 +15,16 @@ internal sealed class UpdateDrillBlockPointCommandHandler : IRequestHandler<Upda
 
     public async Task Handle(UpdateDrillBlockPointCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.DrillBlockPoints.FindAsync(new object[] { request.Id }, cancellationToken);
-        if (entity is null)
+        var point = await _dbContext.DrillBlockPoints.FindAsync(new object?[] { request.PointId }, cancellationToken);
+
+        if (point is null || point.DrillBlockId != request.DrillBlockId)
         {
-            throw new NotFoundException(nameof(DrillBlockPoint), request.Id);
+            throw new NotFoundException(nameof(DrillBlockPoint));
         }
 
-        entity.X = request.X;
-        entity.Y = request.Y;
-        entity.Z = request.Z;
+        point.X = request.X;
+        point.Y = request.Y;
+        point.Z = request.Z;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

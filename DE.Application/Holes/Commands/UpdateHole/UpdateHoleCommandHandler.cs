@@ -14,14 +14,15 @@ internal sealed class UpdateHoleCommandHandler : IRequestHandler<UpdateHoleComma
 
     public async Task Handle(UpdateHoleCommand request, CancellationToken cancellationToken)
     {
-        var hole = await _dbContext.Holes.FindAsync(new object[] { request.Id }, cancellationToken);
-        if (hole is null)
+        var entity = await _dbContext.Holes.FindAsync(new object[] { request.Id }, cancellationToken);
+
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Hole), request.Id);
         }
 
-        hole.Name = request.Name;
-        hole.Depth = request.Depth;
+        entity.Name = request.Name;
+        entity.Depth = request.Depth;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

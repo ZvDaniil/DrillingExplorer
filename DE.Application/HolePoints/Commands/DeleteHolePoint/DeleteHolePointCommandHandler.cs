@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
@@ -14,13 +15,19 @@ internal sealed class DeleteHolePointCommandHandler : IRequestHandler<DeleteHole
 
     public async Task Handle(DeleteHolePointCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext.HolePoints.FindAsync(new object[] { request.HolePointId }, cancellationToken);
-        if (entity is null)
+        var hole = await _dbContext.Holes.FirstOrDefaultAsync(h => h.Id == request.HoleId, cancellationToken);
+
+        if (hole is null)
         {
-            throw new NotFoundException(nameof(HolePoint), request.HolePointId);
+            throw new NotFoundException(nameof(Hole), request.HoleId);
         }
 
-        _dbContext.HolePoints.Remove(entity);
+        if (hole.HolePoint is null)
+        {
+            throw new NotFoundException(nameof(HolePoint));
+        }
+
+        _dbContext.HolePoints.Remove(hole.HolePoint);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

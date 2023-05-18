@@ -15,6 +15,7 @@ internal sealed class UpdateDrillBlockCommandHandler : IRequestHandler<UpdateDri
     public async Task Handle(UpdateDrillBlockCommand request, CancellationToken cancellationToken)
     {
         var drillBlock = await _dbContext.DrillBlocks.FindAsync(new object[] { request.Id }, cancellationToken);
+
         if (drillBlock is null)
         {
             throw new NotFoundException(nameof(DrillBlock), request.Id);

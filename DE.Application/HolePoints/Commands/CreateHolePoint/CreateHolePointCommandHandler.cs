@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
@@ -14,28 +15,31 @@ internal sealed class CreateHolePointCommandHandler : IRequestHandler<CreateHole
 
     public async Task<Guid> Handle(CreateHolePointCommand request, CancellationToken cancellationToken)
     {
-        var hole = await _dbContext.Holes.FindAsync(new object[] { request.HoleId }, cancellationToken);
+        var hole = await _dbContext.Holes.FirstOrDefaultAsync(h => h.Id == request.HoleId, cancellationToken);
+
         if (hole is null)
         {
             throw new NotFoundException(nameof(Hole), request.HoleId);
         }
-        else if (hole.HolePoint is not null)
+
+        if (hole.HolePoint is not null)
         {
-            throw new InvalidOperationException("Hole already has a point.");
+            throw new InvalidOperationException("Point already exists for the specified hole.");
         }
 
-        var holePoint = new HolePoint
+        var point = new HolePoint
         {
             Id = Guid.NewGuid(),
             X = request.X,
             Y = request.Y,
             Z = request.Z,
-            HoleId = hole.Id
+            HoleId = request.HoleId,
+            Hole = hole
         };
 
-        await _dbContext.HolePoints.AddAsync(holePoint, cancellationToken);
+        await _dbContext.HolePoints.AddAsync(point, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return holePoint.Id;
+        return point.Id;
     }
 }

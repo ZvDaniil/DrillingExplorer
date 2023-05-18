@@ -16,28 +16,34 @@ internal sealed class CreateDrillBlockPointCommandHandler : IRequestHandler<Crea
     public async Task<Guid> Handle(CreateDrillBlockPointCommand request, CancellationToken cancellationToken)
     {
         var drillBlock = await _dbContext.DrillBlocks.FindAsync(new object[] { request.DrillBlockId }, cancellationToken);
+
         if (drillBlock is null)
         {
             throw new NotFoundException(nameof(DrillBlock), request.DrillBlockId);
         }
 
-        var maxSequence = await _dbContext.DrillBlockPoints
-            .Where(p => p.DrillBlockId == request.DrillBlockId)
-            .MaxAsync(p => (int?)p.Sequence, cancellationToken);
+        var maxSequence = await GetMaxSequenceForBlock(drillBlock.Id, cancellationToken);
 
-        var drillBlockPoint = new DrillBlockPoint
+        var point = new DrillBlockPoint
         {
             Id = Guid.NewGuid(),
-            Sequence = (maxSequence ?? 0) + 1,
+            Sequence = maxSequence + 1,
             X = request.X,
             Y = request.Y,
             Z = request.Z,
             DrillBlockId = request.DrillBlockId,
+            DrillBlock = drillBlock
         };
 
-        await _dbContext.DrillBlockPoints.AddAsync(drillBlockPoint, cancellationToken);
+        await _dbContext.DrillBlockPoints.AddAsync(point, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return drillBlockPoint.Id;
+        return point.Id;
     }
+
+    private async Task<int> GetMaxSequenceForBlock(Guid drillBlockId, CancellationToken cancellationToken) =>
+        await _dbContext.DrillBlockPoints
+            .Where(p => p.DrillBlockId == drillBlockId)
+            .Select(p => (int?)p.Sequence)
+            .MaxAsync(cancellationToken) ?? 0;
 }

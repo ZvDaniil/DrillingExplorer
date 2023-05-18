@@ -15,6 +15,7 @@ internal sealed class DeleteHoleCommandHandler : IRequestHandler<DeleteHoleComma
     public async Task Handle(DeleteHoleCommand request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Holes.FindAsync(new object[] { request.Id }, cancellationToken);
+
         if (entity is null)
         {
             throw new NotFoundException(nameof(Hole), request.Id);

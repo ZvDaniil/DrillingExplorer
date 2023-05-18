@@ -4,7 +4,7 @@ using DE.Domain.Models;
 
 namespace DE.Persistence.EntityTypeConfigurations;
 
-public class DrillBlockPointConfiguration : IEntityTypeConfiguration<DrillBlockPoint>
+internal class DrillBlockPointConfiguration : IEntityTypeConfiguration<DrillBlockPoint>
 {
     public void Configure(EntityTypeBuilder<DrillBlockPoint> builder)
     {

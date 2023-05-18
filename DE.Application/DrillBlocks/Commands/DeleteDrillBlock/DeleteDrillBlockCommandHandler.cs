@@ -15,6 +15,7 @@ internal sealed class DeleteDrillBlockCommandHandler : IRequestHandler<DeleteDri
     public async Task Handle(DeleteDrillBlockCommand request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.DrillBlocks.FindAsync(new object[] { request.Id }, cancellationToken);
+
         if (entity is null)
         {
             throw new NotFoundException(nameof(DrillBlock), request.Id);

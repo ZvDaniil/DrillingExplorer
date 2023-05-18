@@ -2,6 +2,7 @@
 using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace DE.Application.Holes.Commands.CreateHole;
 
@@ -15,6 +16,7 @@ internal sealed class CreateHoleCommandHandler : IRequestHandler<CreateHoleComma
     public async Task<Guid> Handle(CreateHoleCommand request, CancellationToken cancellationToken)
     {
         var drillBlock = await _dbContext.DrillBlocks.FindAsync(new object[] { request.DrillBlockId }, cancellationToken);
+
         if (drillBlock is null)
         {
             throw new NotFoundException(nameof(DrillBlock), request.DrillBlockId);
@@ -25,7 +27,8 @@ internal sealed class CreateHoleCommandHandler : IRequestHandler<CreateHoleComma
             Id = Guid.NewGuid(),
             Name = request.Name,
             Depth = request.Depth,
-            DrillBlockId = request.DrillBlockId
+            DrillBlockId = request.DrillBlockId,
+            DrillBlock = drillBlock
         };
 
         await _dbContext.Holes.AddAsync(hole, cancellationToken);

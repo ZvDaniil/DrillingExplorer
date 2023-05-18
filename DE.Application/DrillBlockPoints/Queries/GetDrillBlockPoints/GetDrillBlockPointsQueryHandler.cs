@@ -1,42 +1,26 @@
 ﻿using MediatR;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using DE.Domain.Models;
 using DE.Application.Interfaces;
-using DE.Application.Common.Exceptions;
 using DE.Application.DrillBlockPoints.ViewModels;
 
 namespace DE.Application.DrillBlockPoints.Queries.GetDrillBlockPoints;
 
-internal sealed class GetDrillBlockPointsQueryHandler : IRequestHandler<GetDrillBlockPointsQuery, IEnumerable<DrillBlockPointDto>>
+internal sealed class GetDrillBlockPointsQueryHandler
+    : IRequestHandler<GetDrillBlockPointsQuery, IEnumerable<DrillBlockPointDto>>
 {
     private readonly IApplicationDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public GetDrillBlockPointsQueryHandler(IApplicationDbContext dbContext) =>
-        _dbContext = dbContext;
+    public GetDrillBlockPointsQueryHandler(IApplicationDbContext dbContext, IMapper mapper) =>
+        (_dbContext, _mapper) = (dbContext, mapper);
 
-    public async Task<IEnumerable<DrillBlockPointDto>> Handle(GetDrillBlockPointsQuery request, CancellationToken cancellationToken)
-    {
-        var drillBlock = await _dbContext.DrillBlocks
+    public async Task<IEnumerable<DrillBlockPointDto>> Handle(GetDrillBlockPointsQuery request,
+        CancellationToken cancellationToken) =>
+         await _dbContext.DrillBlockPoints
             .AsNoTracking()
-            .Include(b => b.DrillBlockPoints)
-            .FirstOrDefaultAsync(b => b.Id == request.DrillBlockId, cancellationToken);
-
-        if (drillBlock is null)
-        {
-            throw new NotFoundException(nameof(DrillBlock), request.DrillBlockId);
-        }
-
-        var drillBlockPoints = drillBlock.DrillBlockPoints
-            .OrderBy(p => p.Sequence)
-            .Select(p => new DrillBlockPointDto
-            {
-                Id = p.Id,
-                Sequence = p.Sequence,
-                X = p.X,
-                Y = p.Y,
-                Z = p.Z
-            });
-
-        return drillBlockPoints;
-    }
+            .Where(p => p.DrillBlockId == request.DrillBlockId)
+            .ProjectTo<DrillBlockPointDto>(_mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
 }
