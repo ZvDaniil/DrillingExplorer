@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using DE.Application.Interfaces;
 
 namespace DE.Application.HolePoints.Commands.UpdateHolePoint;
 
-public record UpdateHolePointCommand : IRequest
+public record UpdateHolePointCommand : ICommand
 {
     public Guid HoleId { get; set; }
 

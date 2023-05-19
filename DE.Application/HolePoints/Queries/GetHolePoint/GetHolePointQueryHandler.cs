@@ -1,5 +1,4 @@
-﻿using MediatR;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
 using DE.Application.Interfaces;
@@ -8,7 +7,7 @@ using DE.Application.HolePoints.ViewModels;
 
 namespace DE.Application.HolePoints.Queries.GetHolePoints;
 
-internal sealed class GetHolePointQueryHandler : IRequestHandler<GetHolePointQuery, HolePointDto?>
+internal sealed class GetHolePointQueryHandler : IQueryHandler<GetHolePointQuery, HolePointDto?>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;

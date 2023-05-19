@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using DE.Application.Interfaces;
 
 namespace DE.Application.DrillBlockPoints.Commands.UpdatePoint;
 
-public record UpdateDrillBlockPointCommand : IRequest
+public record UpdateDrillBlockPointCommand : ICommand
 {
     public Guid DrillBlockId { get; set; }
     public Guid PointId { get; set; }

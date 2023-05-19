@@ -1,12 +1,11 @@
-﻿using DE.Application.Common.Exceptions;
-using DE.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using DE.Application.Interfaces;
+using DE.Application.Common.Exceptions;
 
 namespace DE.Application.HolePoints.Commands.UpdateHolePoint;
 
-internal sealed class UpdateHolePointCommandHandler : IRequestHandler<UpdateHolePointCommand>
+internal sealed class UpdateHolePointCommandHandler : ICommandHandler<UpdateHolePointCommand>
 {
     private readonly IApplicationDbContext _dbContext;
 

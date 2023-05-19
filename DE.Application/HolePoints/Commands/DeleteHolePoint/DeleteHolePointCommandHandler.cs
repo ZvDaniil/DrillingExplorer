@@ -6,7 +6,7 @@ using DE.Application.Common.Exceptions;
 
 namespace DE.Application.HolePoints.Commands.DeleteHolePoint;
 
-internal sealed class DeleteHolePointCommandHandler : IRequestHandler<DeleteHolePointCommand>
+internal sealed class DeleteHolePointCommandHandler : ICommandHandler<DeleteHolePointCommand>
 {
     private readonly IApplicationDbContext _dbContext;
 

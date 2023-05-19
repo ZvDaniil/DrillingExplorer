@@ -1,5 +1,4 @@
-﻿using MediatR;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
 using DE.Application.Interfaces;
@@ -8,7 +7,7 @@ using DE.Application.Common.Exceptions;
 
 namespace DE.Application.Holes.Queries.GetHoleDetails;
 
-internal sealed class GetHoleDetailsQueryHandler : IRequestHandler<GetHoleDetailsQuery, HoleDetailsVm>
+internal sealed class GetHoleDetailsQueryHandler : IQueryHandler<GetHoleDetailsQuery, HoleDetailsVm>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;

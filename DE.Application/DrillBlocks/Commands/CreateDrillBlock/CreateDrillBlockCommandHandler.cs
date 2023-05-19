@@ -1,10 +1,9 @@
-﻿using MediatR;
-using DE.Domain.Models;
+﻿using DE.Domain.Models;
 using DE.Application.Interfaces;
 
 namespace DE.Application.DrillBlocks.Commands.CreateDrillBlock;
 
-internal sealed class CreateDrillBlockCommandHandler : IRequestHandler<CreateDrillBlockCommand, Guid>
+internal sealed class CreateDrillBlockCommandHandler : ICommandHandler<CreateDrillBlockCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
 

@@ -1,5 +1,5 @@
-﻿using MediatR;
+﻿using DE.Application.Interfaces;
 
 namespace DE.Application.DrillBlocks.Commands.CreateDrillBlock;
 
-public record CreateDrillBlockCommand(string Name) : IRequest<Guid>;
+public record CreateDrillBlockCommand(string Name) : ICommand<Guid>;

@@ -6,7 +6,7 @@ using DE.Application.Common.Exceptions;
 
 namespace DE.Application.HolePoints.Commands.CreateHolePoint;
 
-internal sealed class CreateHolePointCommandHandler : IRequestHandler<CreateHolePointCommand, Guid>
+internal sealed class CreateHolePointCommandHandler : ICommandHandler<CreateHolePointCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
 

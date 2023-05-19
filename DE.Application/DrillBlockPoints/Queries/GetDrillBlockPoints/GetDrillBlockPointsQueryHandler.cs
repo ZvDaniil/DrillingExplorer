@@ -1,5 +1,4 @@
-﻿using MediatR;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using DE.Application.Interfaces;
@@ -8,7 +7,7 @@ using DE.Application.DrillBlockPoints.ViewModels;
 namespace DE.Application.DrillBlockPoints.Queries.GetDrillBlockPoints;
 
 internal sealed class GetDrillBlockPointsQueryHandler
-    : IRequestHandler<GetDrillBlockPointsQuery, IEnumerable<DrillBlockPointDto>>
+    : IQueryHandler<GetDrillBlockPointsQuery, IEnumerable<DrillBlockPointDto>>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;

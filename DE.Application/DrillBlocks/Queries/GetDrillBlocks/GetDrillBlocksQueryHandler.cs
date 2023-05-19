@@ -1,13 +1,12 @@
-﻿using MediatR;
-using AutoMapper;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using DE.Application.Interfaces;
 using DE.Application.DrillBlocks.ViewModels;
-using AutoMapper.QueryableExtensions;
 
 namespace DE.Application.DrillBlocks.Queries.GetDrillBlocks;
 
-internal sealed class GetDrillBlocksQueryHandler : IRequestHandler<GetDrillBlocksQuery, DrillBlockListVm>
+internal sealed class GetDrillBlocksQueryHandler : IQueryHandler<GetDrillBlocksQuery, DrillBlockListVm>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;

@@ -23,11 +23,11 @@ using DE.WebApi.Models.DrillBlockPoint;
 namespace DE.WebApi.Controllers;
 
 [Route("api/[controller]")]
-public class DrillBlockController : BaseController
+public class DrillBlocksController : BaseController
 {
     private readonly IMapper _mapper;
 
-    public DrillBlockController(IMapper mapper) => _mapper = mapper;
+    public DrillBlocksController(IMapper mapper) => _mapper = mapper;
 
     #region DrillBlock CRUD
 

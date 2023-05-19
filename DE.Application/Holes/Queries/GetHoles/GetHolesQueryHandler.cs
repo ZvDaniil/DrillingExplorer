@@ -1,13 +1,12 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using DE.Application.Interfaces;
 using DE.Application.Holes.ViewModels;
-using AutoMapper.QueryableExtensions;
-using AutoMapper;
 
 namespace DE.Application.Holes.Queries.GetHoles;
 
-internal sealed class GetHolesQueryHandler : IRequestHandler<GetHolesQuery, HoleListVm>
+internal sealed class GetHolesQueryHandler : IQueryHandler<GetHolesQuery, HoleListVm>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IMapper _mapper;

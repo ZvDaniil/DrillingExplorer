@@ -21,11 +21,11 @@ using DE.WebApi.Models.HolePoint;
 namespace DE.WebApi.Controllers;
 
 [Route("api/[controller]")]
-public class HoleController : BaseController
+public class HolesController : BaseController
 {
     private readonly IMapper _mapper;
 
-    public HoleController(IMapper mapper) => _mapper = mapper;
+    public HolesController(IMapper mapper) => _mapper = mapper;
 
     #region Hole CRUD
 
@@ -79,9 +79,9 @@ public class HoleController : BaseController
     #region HolePoint CRUD
 
     [HttpGet("{id:guid}/holepoint")]
-    public async Task<ActionResult<HolePointDto>> GetHolePoint(Guid holeId)
+    public async Task<ActionResult<HolePointDto>> GetHolePoint(Guid id)
     {
-        var query = new GetHolePointQuery(holeId);
+        var query = new GetHolePointQuery(id);
         var point = await Sender.Send(query);
 
         return point is null
@@ -90,27 +90,27 @@ public class HoleController : BaseController
     }
 
     [HttpPost("{id:guid}/holepoint")]
-    public async Task<ActionResult> CreateHolePoint(Guid holeId, CreateHolePointDto createHolePointDto)
+    public async Task<ActionResult> CreateHolePoint(Guid id, CreateHolePointDto createHolePointDto)
     {
-        var command = _mapper.Map<CreateHolePointCommand>(createHolePointDto, opts => opts.Items["HoleId"] = holeId);
+        var command = _mapper.Map<CreateHolePointCommand>(createHolePointDto, opts => opts.Items["HoleId"] = id);
         var pointId = await Sender.Send(command);
 
         return NoContent();
     }
 
     [HttpPut("{id:guid}/holepoint")]
-    public async Task<ActionResult> UpdateHolePoint(Guid holeId, UpdateHolePointDto updateHolePointDto)
+    public async Task<ActionResult> UpdateHolePoint(Guid id, UpdateHolePointDto updateHolePointDto)
     {
-        var command = _mapper.Map<UpdateHolePointCommand>(updateHolePointDto, opts => opts.Items["HoleId"] = holeId);
+        var command = _mapper.Map<UpdateHolePointCommand>(updateHolePointDto, opts => opts.Items["HoleId"] = id);
         await Sender.Send(command);
 
         return NoContent();
     }
 
     [HttpDelete("{id:guid}/holepoint")]
-    public async Task<ActionResult> DeleteHolePoint(Guid holeId)
+    public async Task<ActionResult> DeleteHolePoint(Guid id)
     {
-        var command = new DeleteHolePointCommand(holeId);
+        var command = new DeleteHolePointCommand(id);
         await Sender.Send(command);
 
         return NoContent();

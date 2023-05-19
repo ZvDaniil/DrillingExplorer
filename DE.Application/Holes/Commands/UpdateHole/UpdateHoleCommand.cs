@@ -1,5 +1,5 @@
-﻿using MediatR;
+﻿using DE.Application.Interfaces;
 
 namespace DE.Application.Holes.Commands.UpdateHole;
 
-public record UpdateHoleCommand(Guid Id, string Name, double Depth) : IRequest;
+public record UpdateHoleCommand(Guid Id, string Name, double Depth) : ICommand;

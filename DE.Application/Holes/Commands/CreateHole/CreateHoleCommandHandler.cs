@@ -1,12 +1,10 @@
-﻿using MediatR;
-using DE.Domain.Models;
+﻿using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace DE.Application.Holes.Commands.CreateHole;
 
-internal sealed class CreateHoleCommandHandler : IRequestHandler<CreateHoleCommand, Guid>
+internal sealed class CreateHoleCommandHandler : ICommandHandler<CreateHoleCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
 

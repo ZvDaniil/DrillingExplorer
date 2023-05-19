@@ -1,12 +1,11 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
 
 namespace DE.Application.DrillBlockPoints.Commands.UpdatePoint;
 
-internal sealed class UpdateDrillBlockPointCommandHandler : IRequestHandler<UpdateDrillBlockPointCommand>
+internal sealed class UpdateDrillBlockPointCommandHandler : ICommandHandler<UpdateDrillBlockPointCommand>
 {
     private readonly IApplicationDbContext _dbContext;
 

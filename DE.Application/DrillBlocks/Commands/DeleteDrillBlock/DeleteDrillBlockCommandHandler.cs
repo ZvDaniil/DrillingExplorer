@@ -1,11 +1,10 @@
-﻿using MediatR;
+﻿using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
-using DE.Domain.Models;
 
 namespace DE.Application.DrillBlocks.Commands.DeleteDrillBlock;
 
-internal sealed class DeleteDrillBlockCommandHandler : IRequestHandler<DeleteDrillBlockCommand>
+internal sealed class DeleteDrillBlockCommandHandler : ICommandHandler<DeleteDrillBlockCommand>
 {
     private readonly IApplicationDbContext _dbContext;
 

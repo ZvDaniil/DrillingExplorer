@@ -1,11 +1,10 @@
-﻿using MediatR;
-using DE.Domain.Models;
+﻿using DE.Domain.Models;
 using DE.Application.Interfaces;
 using DE.Application.Common.Exceptions;
 
 namespace DE.Application.Holes.Commands.DeleteHole;
 
-internal sealed class DeleteHoleCommandHandler : IRequestHandler<DeleteHoleCommand>
+internal sealed class DeleteHoleCommandHandler : ICommandHandler<DeleteHoleCommand>
 {
     private readonly IApplicationDbContext _dbContext;
 

@@ -6,7 +6,7 @@ using DE.Application.Common.Exceptions;
 
 namespace DE.Application.DrillBlockPoints.Commands.CreatePoint;
 
-internal sealed class CreateDrillBlockPointCommandHandler : IRequestHandler<CreateDrillBlockPointCommand, Guid>
+internal sealed class CreateDrillBlockPointCommandHandler : ICommandHandler<CreateDrillBlockPointCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
 
