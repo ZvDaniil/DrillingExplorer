@@ -1,15 +1,16 @@
-using DE.Application.Common.Mappings;
-using DE.Application.Configurations;
+using System.Reflection;
 using DE.Application.Interfaces;
+using DE.Application.Configurations;
+using DE.Application.Common.Mappings;
 using DE.Persistence;
 using DE.Persistence.Configurations;
-using System.Reflection;
+using DE.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
-Configure(app);
+Configure(app, app.Environment);
 
 try
 {
@@ -19,10 +20,6 @@ try
 catch (Exception exception)
 {
     throw;
-}
-finally
-{
-
 }
 
 void InitializeDatabase()
@@ -45,20 +42,12 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
     services.AddPersistence(configuration);
 
     services.AddControllers();
-    services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
-
-    services.AddCors(options =>
-        options.AddPolicy("AllowAll", policy =>
-            policy
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowAnyOrigin()));
 }
 
-static void Configure(WebApplication app)
+static void Configure(IApplicationBuilder app, IHostEnvironment env)
 {
-    if (app.Environment.IsDevelopment())
+    if (env.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI(options =>
@@ -68,8 +57,8 @@ static void Configure(WebApplication app)
         });
     }
 
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseRouting();
     app.UseHttpsRedirection();
-    app.UseCors("AllowAll");
     app.UseEndpoints(endpoints => endpoints.MapControllers());
 }

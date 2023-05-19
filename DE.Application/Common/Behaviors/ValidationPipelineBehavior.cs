@@ -2,6 +2,8 @@
 using FluentValidation;
 using DE.Application.Interfaces;
 
+using ValidationException = DE.Application.Common.Exceptions.ValidationException;
+
 namespace DE.Application.Common.Behaviors;
 
 public class ValidationPipelineBehavior<TRequest, TResponse>
@@ -26,7 +28,15 @@ public class ValidationPipelineBehavior<TRequest, TResponse>
             .Select(v => v.Validate(context))
             .SelectMany(result => result.Errors)
             .Where(failure => failure is not null)
-            .ToList();
+            .GroupBy(
+                x => x.PropertyName,
+                x => x.ErrorMessage,
+                (propertyName, errorMessages) => new
+                {
+                    Key = propertyName,
+                    Values = errorMessages.Distinct().ToArray()
+                })
+            .ToDictionary(x => x.Key, x => x.Values);
 
         if (failures.Any())
         {
