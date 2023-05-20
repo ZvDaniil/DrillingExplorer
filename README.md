@@ -57,7 +57,7 @@
 ## Сущность "HolePoint"
 
 - [x] `Name` не должно быть пустым.
-- [x] `DrillBlockId` обязательно при создании новой скважины.
+- [x] `HoleId` обязательно при создании новой точки скважины.
 - [x] API должна содержать методы CRUD для управления сущностью `HolePoint`:
   - [x] `GetHolePoint(Guid id)`
   - [x] `CreateHolePoint(Guid holeId, CreateHolePointDto сreateHolePointDto)`
