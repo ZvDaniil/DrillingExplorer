@@ -13,15 +13,15 @@ internal sealed class UpdateDrillBlockCommandHandler : ICommandHandler<UpdateDri
 
     public async Task Handle(UpdateDrillBlockCommand request, CancellationToken cancellationToken)
     {
-        var drillBlock = await _dbContext.DrillBlocks.FindAsync(new object[] { request.Id }, cancellationToken);
+        var entity = await _dbContext.DrillBlocks.FindAsync(new object[] { request.Id }, cancellationToken);
 
-        if (drillBlock is null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(DrillBlock), request.Id);
         }
 
-        drillBlock.Name = request.Name;
-        drillBlock.UpdateDate = DateTime.Now;
+        entity.Name = request.Name;
+        entity.UpdateDate = DateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

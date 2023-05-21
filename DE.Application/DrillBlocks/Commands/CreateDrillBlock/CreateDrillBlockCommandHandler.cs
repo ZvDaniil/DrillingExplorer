@@ -16,7 +16,7 @@ internal sealed class CreateDrillBlockCommandHandler : ICommandHandler<CreateDri
         {
             Id = Guid.NewGuid(),
             Name = request.Name,
-            UpdateDate = null,
+            UpdateDate = null
         };
 
         await _dbContext.DrillBlocks.AddAsync(drillBlock, cancellationToken);
